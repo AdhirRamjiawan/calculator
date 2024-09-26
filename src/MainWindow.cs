@@ -9,9 +9,6 @@ namespace calculator
         //[UI] private Label _label1 = null;
         //[UI] private Button _button1 = null;
 
-        private int _counter;
-
-
         public MainWindow() : base(new Builder("MainWindow.glade").GetRawOwnedObject("MainWindow"))
         {
             DeleteEvent += Window_DeleteEvent;
@@ -25,8 +22,6 @@ namespace calculator
 
         private void Button1_Clicked(object sender, EventArgs a)
         {
-            _counter++;
-            //_label1.Text = "Hello World! This button has been clicked " + _counter + " time(s).";
         }
 
         private void btnMemoryPop_clicked_cb(object sender, EventArgs e)
