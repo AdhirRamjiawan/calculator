@@ -16,9 +16,10 @@ public class CalculatorTests
     {
         // Arrange
         var number = 1;
+        _calculator.SetNumber(number);
 
         // Act
-        var result = _calculator.Add(number);
+        var result = _calculator.Add();
 
         // Assert
         Assert.Equal(1, result);
@@ -34,7 +35,8 @@ public class CalculatorTests
 
         foreach (var num in numbers)
         {
-            _calculator.Add(num);
+            _calculator.SetNumber(num);
+            _calculator.Add();
         }
 
         // Assert
@@ -46,9 +48,11 @@ public class CalculatorTests
     {
         // Arrange
         var number = 1;
+        _calculator.SetNumber(0);
 
         // Act
-        var result = _calculator.Subtract(number);
+        _calculator.SetNumber(number);
+        var result = _calculator.Subtract();
 
         // Assert
         Assert.Equal(-1, result);
@@ -59,12 +63,14 @@ public class CalculatorTests
     {
         // Arrange
         var numbers = new decimal[]{ 3, 5, 7 };
+        _calculator.SetNumber(0);
 
         // Act
 
         foreach (var num in numbers)
         {
-            _calculator.Subtract(num);
+            _calculator.SetNumber(num);
+            _calculator.Subtract();
         }
 
         // Assert
@@ -76,9 +82,11 @@ public class CalculatorTests
     {
         // Arrange
         var number = 1;
+        _calculator.SetNumber(1);
+        _calculator.SetNumber(number);
 
         // Act
-        var result = _calculator.Multiply(number);
+        var result = _calculator.Multiply();
 
         // Assert
         Assert.Equal(1, result);
@@ -88,13 +96,15 @@ public class CalculatorTests
     public void Multiply_WhenCalledMultipleTimes_ShouldMultiplyToAccumulation()
     {
         // Arrange
-        var numbers = new decimal[]{ 3, 5, 1 };
+        var numbers = new decimal[]{3, 5, 1 };
+        _calculator.SetNumber(1);
 
         // Act
 
         foreach (var num in numbers)
         {
-            _calculator.Multiply(num);
+            _calculator.SetNumber(num);
+            _calculator.Multiply();
         }
 
         // Assert
@@ -106,10 +116,11 @@ public class CalculatorTests
     {
         // Arrange
         var number = 1;
-        _calculator.Initialise(1);
+        _calculator.SetNumber(number);
+        _calculator.SetNumber(1);
 
         // Act
-        var result = _calculator.Divide(number);
+        var result = _calculator.Divide();
 
         // Assert
         Assert.Equal(1, result);
@@ -120,13 +131,14 @@ public class CalculatorTests
     {
         // Arrange
         var numbers = new decimal[]{ 3m, 5, 1 };
-        _calculator.Initialise(1);
-
+        _calculator.SetNumber(1);
+        
         // Act
 
         foreach (var num in numbers)
         {
-            _calculator.Divide(num);
+            _calculator.SetNumber(num);
+            _calculator.Divide();
         }
 
         // Assert

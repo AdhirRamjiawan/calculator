@@ -12,16 +12,19 @@ public class Calculator : ICalculator
     }
 
     private State _state;
-    private decimal _result = 0;
+    private decimal _result;
+    private decimal _temp;
 
     public Calculator()
     {
         _state = State.Cleared;
+        _result = 0;
+        _temp = 0;
     }
 
-    public decimal Add(decimal number)
+    public decimal Add()
     {
-        _result += number;
+        _result += _temp;
         return _result;
     }
 
@@ -31,7 +34,7 @@ public class Calculator : ICalculator
         _state = State.Cleared;
     }
 
-    public decimal Divide(decimal number)
+    public decimal Divide()
     {
         if (_result == 0)
         {
@@ -39,44 +42,52 @@ public class Calculator : ICalculator
             return _result;
         }
 
-        _result /= number;
+        _result /= _temp;
         return _result;
     }
 
     public decimal GetResult() => _result;
 
-    public decimal Multiply(decimal number)
+    public decimal Multiply()
+    {
+        if (_state == State.Cleared)
+        {
+            _result = _temp;
+            _state = State.Dirty;
+            return _result;
+        }
+
+        _result *= _temp;
+        return _result;
+    }
+
+    public decimal Subtract()
+    {
+        _result -= _temp;
+        return _result;
+    }
+
+    public void SetNumber(decimal number)
     {
         if (_state == State.Cleared)
         {
             _result = number;
             _state = State.Dirty;
-            return _result;
         }
-
-        _result *= number;
-        return _result;
-    }
-
-    public decimal Subtract(decimal number)
-    {
-        _result -= number;
-        return _result;
-    }
-
-    public void Initialise(decimal number)
-    {
-        _result = number;
+        else if (_state == State.Dirty)
+        {
+            _temp = number;
+        }
     }
 }
 
 public interface ICalculator
 {
-    public void Initialise(decimal number);
+    public void SetNumber(decimal number);
     public decimal GetResult();
     public void Clear();
-    public decimal Add(decimal number);
-    public decimal Subtract(decimal number);
-    public decimal Multiply(decimal number);
-    public decimal Divide(decimal number);
+    public decimal Add();
+    public decimal Subtract();
+    public decimal Multiply();
+    public decimal Divide();
 }
