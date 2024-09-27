@@ -24,7 +24,6 @@ namespace calculator
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
             _calculator = new Calculator();
-            _calculator.SetNumber(0);
 
             DeleteEvent += Window_DeleteEvent;
             //_button1.Clicked += Button1_Clicked;
@@ -116,15 +115,13 @@ namespace calculator
         private void SetNumber(decimal number)
         {
             _calculator.SetNumber(number);
+            _calculator.ApplyOperation();
             _answer.Text = number.ToString();
         }
 
         private void SetOperation(Operation operation)
         {
             _calculator.SetOperation(operation);
-            //_answer.Text = _calculator.GetResult().ToString();
         }
-        
-        // 1 + 1 = 2
     }
 }

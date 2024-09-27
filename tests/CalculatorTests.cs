@@ -123,15 +123,17 @@ public class CalculatorTests
     public void Divide_WhenGivenANumber_ShouldDivideFromAccumulation()
     {
         // Arrange
-        var number = 1;
+        var number = 2;
         _calculator.SetNumber(number);
         _calculator.SetNumber(1);
 
+        _calculator.SetOperation(ICalculator.Operation.Divide);
+
         // Act
-        var result = _calculator.Divide();
+        _calculator.ApplyOperation();
 
         // Assert
-        Assert.Equal(1, result);
+        Assert.Equal(2, _calculator.GetResult());
     }
 
     [Fact]
@@ -151,6 +153,6 @@ public class CalculatorTests
         _calculator.ApplyOperation();
 
         // Assert
-        Assert.Equal(0.0666666666666666666666666667m, _calculator.GetResult());
+        Assert.Equal(0.6m, _calculator.GetResult());
     }
 }

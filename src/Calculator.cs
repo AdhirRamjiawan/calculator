@@ -5,20 +5,12 @@ namespace calculator;
 
 public class Calculator : ICalculator
 {
-    public enum State
-    {
-        Cleared = 0,
-        Error
-    }
-
     private Operation _operation;
-    private State _state;
     private decimal _result;
     private DecimalStack _input;
 
     public Calculator()
     {
-        _state = State.Cleared;
         _result = 0;
         _input = new DecimalStack();
     }
@@ -38,13 +30,12 @@ public class Calculator : ICalculator
         _result = 0;
         _input.Clear();
         _operation = Operation.None;
-        _state = State.Cleared;
     }
 
     public decimal Divide()
     {
         _input.Reverse();
-        
+
         var temp = _input.Pop();
 
         while(_input.Count() > 0)
@@ -75,10 +66,15 @@ public class Calculator : ICalculator
 
     public decimal Subtract()
     {
+        _input.Reverse();
+        var temp = _input.Pop();
+
         while(_input.Count() > 0)
         {
-            _result -= _input.Pop();
+            temp  -= _input.Pop();
         }
+
+        _result = temp;
 
         return _result;
     }

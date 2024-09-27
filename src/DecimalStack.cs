@@ -1,7 +1,6 @@
 
 
 using System.Collections;
-using System.Linq;
 
 namespace calculator;
 
@@ -31,7 +30,7 @@ public class DecimalStack
 
     public void Reverse()
     {
-        var temp = _stack.ToArray().Reverse();
+        var temp = _stack.ToArray();
         _stack.Clear();
         
         foreach (var num in temp)
