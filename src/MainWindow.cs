@@ -122,8 +122,9 @@ namespace calculator
         private void SetOperation(Operation operation)
         {
             _calculator.SetOperation(operation);
-            _calculator.ApplyOperation();
-            _answer.Text = _calculator.GetResult().ToString();
+            //_answer.Text = _calculator.GetResult().ToString();
         }
+        
+        // 1 + 1 = 2
     }
 }

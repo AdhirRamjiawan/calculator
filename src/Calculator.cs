@@ -1,5 +1,4 @@
 
-
 using static calculator.ICalculator;
 
 namespace calculator;
@@ -9,45 +8,52 @@ public class Calculator : ICalculator
     public enum State
     {
         Cleared = 0,
-        Dirty,
         Error
     }
 
     private Operation _operation;
     private State _state;
     private decimal _result;
-    private decimal _temp;
+    private DecimalStack _input;
 
     public Calculator()
     {
         _state = State.Cleared;
         _result = 0;
-        _temp = 0;
+        _input = new DecimalStack();
     }
 
     public decimal Add()
     {
-        _result += _temp;
+        while(_input.Count() > 0)
+        {
+            _result += _input.Pop();
+        }
+
         return _result;
     }
 
     public void Clear()
     {
         _result = 0;
-        _temp = 0;
+        _input.Clear();
         _operation = Operation.None;
         _state = State.Cleared;
     }
 
     public decimal Divide()
     {
-        if (_result == 0)
+        _input.Reverse();
+        
+        var temp = _input.Pop();
+
+        while(_input.Count() > 0)
         {
-            _state = State.Error;
-            return _result;
+            temp /= _input.Pop();
         }
 
-        _result /= _temp;
+        _result = temp;
+
         return _result;
     }
 
@@ -55,40 +61,31 @@ public class Calculator : ICalculator
 
     public decimal Multiply()
     {
-        if (_state == State.Cleared)
+        var temp = _input.Pop();
+
+        while(_input.Count() > 0)
         {
-            _result = _temp;
-            _state = State.Dirty;
-            return _result;
+            temp *= _input.Pop();
         }
 
-        _result *= _temp;
+        _result = temp;
+
         return _result;
     }
 
     public decimal Subtract()
     {
-        _result -= _temp;
+        while(_input.Count() > 0)
+        {
+            _result -= _input.Pop();
+        }
+
         return _result;
     }
 
     public void SetNumber(decimal number)
     {
-        if (_state == State.Cleared)
-        {
-            _result = number;
-            _state = State.Dirty;
-        }
-        else if (_state == State.Dirty)
-        {
-            _temp = number;
-        }
-
-        if (_operation != Operation.None)
-        {
-            ApplyOperation();
-            _operation = Operation.None;
-        }
+        _input.Push(number);
     }
 
     public void SetOperation(Operation operation)
@@ -98,6 +95,11 @@ public class Calculator : ICalculator
 
     public void ApplyOperation()
     {
+        if (_input.Count() < 2)
+        {
+            return;
+        }
+
         switch(_operation)
         {
             case Operation.Add:

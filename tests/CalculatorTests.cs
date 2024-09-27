@@ -17,12 +17,14 @@ public class CalculatorTests
         // Arrange
         var number = 1;
         _calculator.SetNumber(number);
+        _calculator.SetNumber(1);
+        _calculator.SetOperation(ICalculator.Operation.Add);
 
         // Act
-        var result = _calculator.Add();
+        _calculator.ApplyOperation();
 
         // Assert
-        Assert.Equal(1, result);
+        Assert.Equal(2, _calculator.GetResult());
     }
 
     [Fact]
@@ -30,14 +32,15 @@ public class CalculatorTests
     {
         // Arrange
         var numbers = new decimal[]{ 3, 5, 7 };
-
-        // Act
+        _calculator.SetOperation(ICalculator.Operation.Add);
 
         foreach (var num in numbers)
         {
             _calculator.SetNumber(num);
-            _calculator.Add();
         }
+
+        // Act
+        _calculator.ApplyOperation();
 
         // Assert
         Assert.Equal(3 + 5 + 7, _calculator.GetResult());
@@ -63,15 +66,17 @@ public class CalculatorTests
     {
         // Arrange
         var numbers = new decimal[]{ 3, 5, 7 };
-        _calculator.SetNumber(0);
 
-        // Act
+        _calculator.SetOperation(ICalculator.Operation.Subtract);
 
         foreach (var num in numbers)
         {
             _calculator.SetNumber(num);
-            _calculator.Subtract();
         }
+
+
+        // Act
+        _calculator.ApplyOperation();
 
         // Assert
         Assert.Equal(-3 - 5 - 7, _calculator.GetResult());
@@ -81,15 +86,17 @@ public class CalculatorTests
     public void Multiply_WhenGivenANumber_ShouldMultiplyToAccumulation()
     {
         // Arrange
-        var number = 1;
-        _calculator.SetNumber(1);
+        var number = 4;
+        _calculator.SetNumber(3);
         _calculator.SetNumber(number);
 
+        _calculator.SetOperation(ICalculator.Operation.Multiply);
+
         // Act
-        var result = _calculator.Multiply();
+        _calculator.ApplyOperation();
 
         // Assert
-        Assert.Equal(1, result);
+        Assert.Equal(12, _calculator.GetResult());
     }
 
     [Fact]
@@ -97,15 +104,16 @@ public class CalculatorTests
     {
         // Arrange
         var numbers = new decimal[]{3, 5, 1 };
-        _calculator.SetNumber(1);
 
-        // Act
+        _calculator.SetOperation(ICalculator.Operation.Multiply);
 
         foreach (var num in numbers)
         {
             _calculator.SetNumber(num);
-            _calculator.Multiply();
-        }
+        }        
+
+        // Act
+        _calculator.ApplyOperation();
 
         // Assert
         Assert.Equal(3 * 5 * 1, _calculator.GetResult());
@@ -131,15 +139,16 @@ public class CalculatorTests
     {
         // Arrange
         var numbers = new decimal[]{ 3m, 5, 1 };
-        _calculator.SetNumber(1);
-        
-        // Act
+
+        _calculator.SetOperation(ICalculator.Operation.Divide);
 
         foreach (var num in numbers)
         {
             _calculator.SetNumber(num);
-            _calculator.Divide();
         }
+
+        // Act
+        _calculator.ApplyOperation();
 
         // Assert
         Assert.Equal(0.0666666666666666666666666667m, _calculator.GetResult());
