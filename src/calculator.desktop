@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Simple Calculator
+Comment=Simple Calculator App
+Exec=/usr/local/bin/calculator/calculator
+Icon=image from which we create an icon in menu list
+Type=Application
+Categories=Accessories;
