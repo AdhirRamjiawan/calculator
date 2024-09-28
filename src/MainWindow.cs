@@ -16,6 +16,10 @@ namespace calculator
 
         [UI] private Button _btnClear, _btnMemoryPush, _btnMemoryPop = null;
 
+        private string _inputNumber = string.Empty;
+
+        private static string ZERO_STRING = 0.ToString();
+
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
 
@@ -26,7 +30,6 @@ namespace calculator
             _calculator = new Calculator();
 
             DeleteEvent += Window_DeleteEvent;
-            //_button1.Clicked += Button1_Clicked;
 
             _answer = (Entry)builder.GetObject("txtAnswer");
 
@@ -80,13 +83,14 @@ namespace calculator
 
         private void btnMemoryPush_clicked_cb(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnClear_clicked_cb(object sender, EventArgs e)
         {
             _calculator.Clear();
-            _answer.Text = 0.ToString();
+            _answer.Text = ZERO_STRING;
+            _inputNumber = ZERO_STRING;
         }
 
         private void btn9_clicked_cb(object sender, EventArgs e) => SetNumber(9);
@@ -94,7 +98,7 @@ namespace calculator
         private void btn7_clicked_cb(object sender, EventArgs e) => SetNumber(7);
         private void btn6_clicked_cb(object sender, EventArgs e) => SetNumber(6);
         private void btn5_clicked_cb(object sender, EventArgs e) => SetNumber(5);
-        private void btn4_clicked_cb(object sender, EventArgs e)  => SetNumber(4);
+        private void btn4_clicked_cb(object sender, EventArgs e) => SetNumber(4);
         private void btn3_clicked_cb(object sender, EventArgs e) => SetNumber(3);
         private void btn2_clicked_cb(object sender, EventArgs e) => SetNumber(2);
         private void btn1_clicked_cb(object sender, EventArgs e) => SetNumber(1);
@@ -104,23 +108,40 @@ namespace calculator
 
         private void btnSubtract_clicked_cb(object sender, EventArgs e) => SetOperation(Operation.Subtract);
         private void btnMultiply_clicked_cb(object sender, EventArgs e) => SetOperation(Operation.Multiply);
-        private void btnDivide_clicked_cb(object sender, EventArgs e)  => SetOperation(Operation.Divide);
+        private void btnDivide_clicked_cb(object sender, EventArgs e) => SetOperation(Operation.Divide);
 
-        private void btnEquals_clicked_cb(object sender, EventArgs e) 
+        private void btnEquals_clicked_cb(object sender, EventArgs e)
         {
-            _calculator.ApplyOperation();
-            _answer.Text = _calculator.GetResult().ToString();
+            if (_inputNumber != string.Empty)
+            {
+                _calculator.SetNumber(Convert.ToDecimal(_inputNumber));
+
+                _calculator.ApplyOperation();
+                _answer.Text = _calculator.GetResult().ToString();
+            }
+
+            _inputNumber = string.Empty;
         }
 
         private void SetNumber(decimal number)
         {
-            _calculator.SetNumber(number);
-            _calculator.ApplyOperation();
-            _answer.Text = number.ToString();
+            _inputNumber += number.ToString();
+            _answer.Text = _inputNumber.ToString();
         }
 
         private void SetOperation(Operation operation)
         {
+            if (_inputNumber == string.Empty)
+            {
+                _answer.Text = string.Empty;
+            }
+            else
+            {
+                _calculator.SetNumber(Convert.ToDecimal(_inputNumber));
+                _calculator.ApplyOperation();
+                _inputNumber = string.Empty;
+            }
+
             _calculator.SetOperation(operation);
         }
     }

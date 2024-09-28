@@ -17,10 +17,14 @@ public class Calculator : ICalculator
 
     public decimal Add()
     {
+        var temp = _input.Pop();
+
         while(_input.Count() > 0)
         {
-            _result += _input.Pop();
+            temp += _input.Pop();
         }
+
+        _result = temp;
 
         return _result;
     }
@@ -111,6 +115,9 @@ public class Calculator : ICalculator
                 Divide();
                 break;
         }
+
+        _input.Clear();
+        _input.Push(_result);
     }
 }
 
