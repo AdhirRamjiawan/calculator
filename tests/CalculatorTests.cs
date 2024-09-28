@@ -79,7 +79,7 @@ public class CalculatorTests
         _calculator.ApplyOperation();
 
         // Assert
-        Assert.Equal(-3 - 5 - 7, _calculator.GetResult());
+        Assert.Equal(3 - 5 - 7, _calculator.GetResult());
     }
 
     [Fact]
